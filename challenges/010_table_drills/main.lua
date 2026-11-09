@@ -171,22 +171,18 @@ end
 
 local function chunk(list, size)
     local returnData = {}
-    for i = 1, #list, size do
-        local returnChunk = {}
-        for index = i, size do
-            if list[index] then
-                returnChunk[#returnChunk + 1] = list[index]
-            end
+    local returnChunk = {}
+    for i = 1, #list do
+        returnChunk[#returnChunk + 1] = list[i]
+        if #returnChunk == size then
+            returnData[#returnData + 1] = returnChunk
+            returnChunk = {}
         end
-        returnData[#returnData + 1] = returnChunk
     end
     return returnData
 end
 
-
-
 for index, value in ipairs(chunk({ 1, 2, 3, 4, 5 }, 2)) do
-    print(value)
     for i = 1, #value do
         print(value[i])
     end
