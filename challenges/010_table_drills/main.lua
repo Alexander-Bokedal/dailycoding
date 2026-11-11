@@ -182,8 +182,108 @@ local function chunk(list, size)
     return returnData
 end
 
-for index, value in ipairs(chunk({ 1, 2, 3, 4, 5 }, 2)) do
-    for i = 1, #value do
-        print(value[i])
+-- for index, value in ipairs(chunk({ 1, 2, 3, 4, 5 }, 2)) do
+--     for i = 1, #value do
+--         print(value[i])
+--     end
+-- end
+
+-- ## Part B - Nested tables
+
+-- Use this grid (a list of rows, each row a list):
+
+--     local grid = {
+--         {1, 2, 3},
+--         {4, 5, 6},
+--         {7, 8, 9},
+--     }
+
+-- 10. `printGrid(grid)` prints one line per row, with the numbers separated by spaces.
+local grid = {
+    { 1, 2, 3 },
+    { 4, 5, 6 },
+    { 7, 8, 9 },
+}
+
+local function printGrid(grid)
+    for _, v in ipairs(grid) do
+        local string = ""
+        for i = 1, #v do
+            string = string .. v[i] .. " "
+        end
+        print(string)
     end
 end
+
+printGrid(grid)
+
+-- 11. `sumGrid(grid)` returns the sum of every number.
+
+local function sumGrid(grid)
+    local returnData = 0
+    for _, v in ipairs(grid) do
+        returnData = returnData + reduce(v, sumData, 0)
+    end
+    return returnData
+end
+
+print(sumGrid(grid))
+
+-- 12. `getColumn(grid, n)` returns column n as a list. `getColumn(grid, 2)` gives `{2, 5, 8}`.
+
+local function getColumn(grid, n)
+    local returnData = {}
+    for _, v in ipairs(grid) do
+        returnData[#returnData + 1] = v[n]
+    end
+    return returnData
+end
+
+-- 13. `transpose(grid)` returns a NEW grid where rows and columns are swapped.
+local function transpose(grid)
+    local returnData = {}
+    local counter = 1
+    for i = 1, #grid[1] do
+        returnData[i] = {}
+    end
+    for index, value in ipairs(grid) do
+        for i = 1, #value do
+            returnData[i][#returnData[i]+1] = value[i]
+        end
+    end
+    return returnData
+end
+
+printGrid(transpose(grid))
+
+-- 14. `flatten(nested)` turns `{{1,2},{3},{4,5}}` into `{1,2,3,4,5}`.
+
+local differentGrid = { { 1, 2 }, { 3 }, { 4, 5 } }
+
+local function flatten(grid)
+    local returnData = {}
+    for _, v in ipairs(grid) do
+        for i = 1, #v do
+            returnData[#returnData + 1] = v[i]
+        end
+    end
+    return returnData
+end
+
+-- for _, value in ipairs(flatten(differentGrid)) do
+--     print(value)
+-- end
+
+-- ## Part C - Lists of records
+
+
+-- 16. `groupByTag(people)` returns a table where each key is a tag and each value is a list of names. `result.dev` should be `{"Anna", "Clara"}`.
+-- 17. `sortBy(list, key)` returns the list sorted by a field, lowest first. Do it yourself with a loop (don't use `table.sort`).
+
+local people = {
+
+        {name = "Anna",  age = 31, tags = {"dev", "lead"}},
+        {name = "Ben",   age = 24, tags = {"design"}},
+        {name = "Clara", age = 45, tags = {"dev", "ops", "lead"}},
+    }
+-- 15. `pluck(list, key)` returns a list of one field from every record. `pluck(people, "age")` gives `{31, 24, 45}`.
